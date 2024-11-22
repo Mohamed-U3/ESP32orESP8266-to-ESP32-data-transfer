@@ -7,13 +7,13 @@ WiFiClient client; // Required for ESP8266
 #include <HTTPClient.h>
 #endif
 
-const char* ssid = "AMD";
+const char* ssid     = "AMD";
 const char* password = "   hoda   ";
 const char* serverIP = "192.168.1.8"; // Replace with Receiver ESP32's IP
 const int serverPort = 80;
 
-#define FLAME_SENSOR_PIN 34
-#define GAS_SENSOR_PIN 35
+#define FLAME_SENSOR_PIN  34
+#define GAS_SENSOR_PIN    35
 
 void setup()
 {
@@ -34,8 +34,8 @@ void setup()
 
 void loop()
 {
-  int flameValue = analogRead(FLAME_SENSOR_PIN);
-  int gasValue = analogRead(GAS_SENSOR_PIN);
+  int flameValue  = 34;//analogRead(FLAME_SENSOR_PIN);
+  int gasValue    = 897;//analogRead(GAS_SENSOR_PIN);
 
   if (WiFi.status() == WL_CONNECTED) { // Check Wi-Fi connection
     HTTPClient http;

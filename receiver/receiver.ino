@@ -2,13 +2,36 @@
 #include <WebServer.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "AMD";
+const char* ssid     = "AMD";
 const char* password = "   hoda   ";
 
-int flameSensorValue = 0; // Global variable for flame data
-int gasSensorValue = 0;   // Global variable for gas data
+int flameSensorValue = 0;   // Global variable for flame data
+int gasSensorValue   = 0;   // Global variable for gas data
 
 WebServer server(80);
+
+void handleReceive();
+
+void setup()
+{
+  Serial.begin(115200);
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(1000);
+    Serial.println("Connecting to Wi-Fi...");
+  }
+  Serial.println("Connected to Wi-Fi");
+  Serial.println("Receiver IP Address: " + WiFi.localIP().toString());
+  server.on("/receive", HTTP_POST, handleReceive);
+  server.begin();
+}
+
+void loop()
+{
+  server.handleClient();
+}
 
 void handleReceive()
 {
@@ -46,23 +69,4 @@ void handleReceive()
   {
     server.send(400, "text/plain", "No data received");
   }
-}
-
-void setup()
-{
-  Serial.begin(115200);
-
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to Wi-Fi...");
-  }
-  Serial.println("Connected to Wi-Fi");
-  Serial.println("Receiver IP Address: " + WiFi.localIP().toString());
-  server.on("/receive", HTTP_POST, handleReceive);
-  server.begin();
-}
-
-void loop() {
-  server.handleClient();
 }
